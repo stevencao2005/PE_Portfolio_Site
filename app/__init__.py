@@ -29,3 +29,8 @@ def education():
         }
     ]
     return render_template('education.html', name=name, title="Education", educations = educations, url=os.getenv("URL"))
+
+@app.route('/hobbies')
+def hobbies():
+    hobbies = ["Reading books", "Playing Ping Pong", "Running", "Biking", "Hiking"]
+    return render_template('hobbies.html', name=name, title="Hobbies", hobbies=hobbies, url=os.getenv("URL"))

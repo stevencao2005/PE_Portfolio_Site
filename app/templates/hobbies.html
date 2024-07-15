@@ -1,0 +1,11 @@
+{%extends "index.html" %}
+
+{%block content%}
+
+{% for hobby in hobbies %}
+    <div class="hobby">
+        <h3>{{ hobby }}</h3>
+    </div>
+{% endfor %}
+
+{%endblock%}

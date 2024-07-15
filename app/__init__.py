@@ -6,7 +6,7 @@ load_dotenv()
 app = Flask(__name__)
 
 name = "Steven Cao"
-
+ 
 @app.route('/')
 def index():
     about_me = "Hey! My name is Steven cao. I'm a undergradute computer science student at the University of California, Irvine."

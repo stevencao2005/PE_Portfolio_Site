@@ -95,3 +95,27 @@ body {
     font-size: 50px;
     font-weight: 700;
 }
+
+.menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #ffda56;
+    margin-bottom: 50px;
+}
+
+.menu-item {
+    color: #1C539F;
+    text-decoration: none;
+    font-size: 40px;
+    font-weight: 700;
+    font-family: "Roboto", serif;
+    text-align: center;
+    padding: 10px;
+}
+
+.menu-item:hover {
+    background-color: #e0c04d;
+}

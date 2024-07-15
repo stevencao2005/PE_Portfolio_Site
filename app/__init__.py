@@ -15,7 +15,7 @@ def index():
         {'lat': 41, 'lon': -74, 'popup': 'New York'},
         {'lat': 18, 'lon': -155, 'popup': 'Hawaii'},
     ]
-    return render_template('index.html', name=name, title="About", about=about_me, markers=markers, url=os.getenv("URL"))
+    return render_template('map.html', name=name, title="About", about=about_me, markers=markers, url=os.getenv("URL"))
 
 @app.route('/education')
 def education():

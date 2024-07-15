@@ -1,0 +1,14 @@
+{%extends "index.html" %}
+
+{%block content%}
+
+{% for work_experience in work_experiences %}
+    <div class="work-experience">
+        <h3>{{ work_experience.company }}</h3>
+        <h4>{{ work_experience.position }}</h4>
+        <p>{{ work_experience.start_date }} - {{ work_experience.end_date }}</p>
+        <p>{{ work_experience.description }}</p>
+    </div>
+{% endfor %}
+
+{%endblock%}

@@ -34,3 +34,16 @@ def education():
 def hobbies():
     hobbies = ["Reading books", "Playing Ping Pong", "Running", "Biking", "Hiking"]
     return render_template('hobbies.html', name=name, title="Hobbies", hobbies=hobbies, url=os.getenv("URL"))
+
+@app.route('/work_experiences')
+def work_experiences():
+    experiences = [
+        {
+        'position': "Undergraduate Student Researcher",
+        'company': "UCI Samueli School of Engineering",
+        'start_date': "September 2023",
+        'end_date': "Present",
+        'description': "Developed deep learning models using EEGNet and InceptionTime for biometric identification and mTBI detection"
+        }
+    ]
+    return render_template('work_experiences.html', name=name, title="Work Experiences", work_experiences=experiences, url=os.getenv("URL"))

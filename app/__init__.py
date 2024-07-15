@@ -5,7 +5,27 @@ from dotenv import load_dotenv
 load_dotenv()
 app = Flask(__name__)
 
+name = "Steven Cao"
 
 @app.route('/')
 def index():
-    return render_template('index.html', title="MLH Fellow", url=os.getenv("URL"))
+    about_me = "Hey! My name is Steven cao. I'm a undergradute computer science student at the University of California, Irvine."
+    markers  = [       
+        {'lat': 33, 'lon': -118, 'popup': 'Los Angeles'},
+        {'lat': 41, 'lon': -74, 'popup': 'New York'},
+        {'lat': 18, 'lon': -155, 'popup': 'Hawaii'},
+    ]
+    return render_template('index.html', name=name, title="About", about=about_me, markers=markers, url=os.getenv("URL"))
+
+@app.route('/education')
+def education():
+    educations = [
+        {
+            'school': "UC Irvine",
+            'degree': "B.S. in Computer Science, Minor in Mathematics",
+            'start_date': "September 2023",
+            'end_date': "June 2027",
+            'description': "Majoring in Computer Science and Mathematics at UC Irvine"
+        }
+    ]
+    return render_template('education.html', name=name, title="Education", educations = educations, url=os.getenv("URL"))

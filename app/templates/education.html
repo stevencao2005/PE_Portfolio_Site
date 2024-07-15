@@ -1,0 +1,14 @@
+{%extends "index.html" %}
+
+{%block content%}
+
+{% for education in educations %}
+    <div class="educations">
+        <h3>{{ education.school }}</h3>
+        <h4>{{ education.degree }}</h4>
+        <p>{{ education.start_date }} - {{ education.end_date }}</p>
+        <p>{{ education.description }}</p>
+    </div>
+{% endfor %}
+
+{%endblock%}

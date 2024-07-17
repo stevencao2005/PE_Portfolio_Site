@@ -30,6 +30,8 @@ class TimelinePost(Model):
 
 mydb.connect()
 mydb.create_tables([TimelinePost])
+
+
 name = "Steven Cao"
  
 @app.route('/')

@@ -84,3 +84,13 @@ def post_time_line_post():
     timeline_post = TimelinePost.create(name=name, email=email, content=content)
 
     return model_to_dict(timeline_post)
+
+#GET endpoint that retrieves all timeline posts ordered by created_at descending so the newest timeline posts are returned at the top
+@app.route('/api/timeline_post', methods=["GET"])
+def get_time_line_post():
+    return {
+        'timeline_posts' : [
+            model_to_dict(p)
+            for p in TimelinePost.select().order_by(TimelinePost.created_at.desc())
+        ]
+    }

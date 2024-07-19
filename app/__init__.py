@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from dotenv import load_dotenv
 from peewee import *
 import datetime
+import pymysql
 from playhouse.shortcuts import model_to_dict
 
 load_dotenv()
@@ -28,9 +29,11 @@ class TimelinePost(Model):
     class Meta:
         database = mydb
 
-mydb.connect()
-mydb.create_tables([TimelinePost])
-
+try:
+    mydb.connect()
+    mydb.create_tables([TimelinePost])
+except OperationalError as e:
+    print(f"An error occurred: {e}")
 
 name = "Steven Cao"
  
@@ -96,3 +99,7 @@ def get_time_line_post():
             for p in TimelinePost.select().order_by(TimelinePost.created_at.desc())
         ]
     }
+
+@app.route('/timeline')
+def timeline():
+    return render_template('timeline.html', title='Timeline')

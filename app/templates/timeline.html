@@ -1,0 +1,109 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="container">
+
+    <!-- Form for creating new timeline post -->
+    <form id="timelineForm" novalidate>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+            <div class="invalid-feedback">Please enter your name.</div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+            <div class="invalid-feedback">Please enter a valid email address.</div>
+        </div>
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+            <div class="invalid-feedback">Please enter some content.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Post</button>
+    </form>
+
+    <hr>
+
+    <!-- Loading indicator -->
+    <div id="loading" class="text-center my-3" style="display: none;">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Timeline posts display -->
+    <div id="timelinePosts">
+        <!-- Timeline posts will be dynamically added here -->
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const timelineForm     = document.getElementById('timelineForm');
+    const timelinePosts    = document.getElementById('timelinePosts');
+    const loadingIndicator = document.getElementById('loading');
+
+    // function to fetch timeline posts and display on page load
+    function fetchTimelinePosts() {
+        loadingIndicator.style.display = 'block';
+        fetch('/api/timeline_post')
+            .then(response => response.json())
+            .then(data => {
+                timelinePosts.innerHTML = ''; // clear previous posts
+
+                data.timeline_posts.forEach(post => {
+                    const postDiv = document.createElement('div');
+                    postDiv.classList.add('card', 'my-2');
+                    postDiv.innerHTML = `
+                        <div class="card-body">
+                            <h5 class="card-title">${post.name}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">${post.email}</h6>
+                            <p class="card-text">${post.content}</p>
+                            <small class="text-muted">${new Date(post.created_at).toLocaleString()}</small>
+                        </div>
+                    `;
+                    timelinePosts.appendChild(postDiv);
+                });
+            })
+            .catch(error => console.error('Error fetching timeline posts:', error))
+            .finally(() => {
+                loadingIndicator.style.display = 'none';
+            });
+    }
+
+    // fetch timeline posts on page load
+    fetchTimelinePosts();
+
+    // submit event listener for posting new timeline entry
+    timelineForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        if (!timelineForm.checkValidity()) {
+            event.stopPropagation();
+            timelineForm.classList.add('was-validated');
+            return;
+        }
+
+        const formData = new FormData(this);
+        fetch('/api/timeline_post', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // display newly added post
+            fetchTimelinePosts();
+            // clear form fields and remove validation feedback
+            timelineForm.reset();
+            timelineForm.classList.remove('was-validated');
+            // set focus back to the name field for better UX
+            document.getElementById('name').focus();
+        })
+        .catch(error => console.error('Error adding timeline post:', error));
+    });
+
+    // autofocus on the name field when the page loads
+    document.getElementById('name').focus();
+});
+</script>
+{% endblock %}

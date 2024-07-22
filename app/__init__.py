@@ -1,5 +1,5 @@
-import os
-from flask import Flask, render_template, request
+import os, re
+from flask import Flask, make_response, jsonify, render_template, request
 from dotenv import load_dotenv
 from peewee import *
 import datetime
@@ -84,14 +84,20 @@ def work_experiences():
 
 
 # POST route which adds a timeline post
-@app.route('/api/timeline_post', methods = ["POST"])
+@app.route('/api/timeline_post', methods=["POST"])
 def post_time_line_post():
-    name = request.form['name']
-    email = request.form['email']
-    content = request.form['content']
-    timeline_post = TimelinePost.create(name=name, email=email, content=content)
+    data = request.form
+    name, email, content = data.get('name'), data.get('email'), data.get('content')
 
-    return model_to_dict(timeline_post)
+    if not name:
+        return make_response(jsonify({'error': 'Invalid name'}), 400)
+    if not email or not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return make_response(jsonify({'error': 'Invalid email'}), 400)
+    if not content:
+        return make_response(jsonify({'error': 'Invalid content'}), 400)
+    
+    timeline_post = TimelinePost.create(name=name, email=email, content=content)
+    return jsonify(model_to_dict(timeline_post))
 
 #GET endpoint that retrieves all timeline posts ordered by created_at descending so the newest timeline posts are returned at the top
 @app.route('/api/timeline_post', methods=["GET"])

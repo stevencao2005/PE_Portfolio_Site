@@ -7,13 +7,18 @@ MODELS=[TimelinePost]
 
 test_db=SqliteDatabase(':memory:')
 
+#test the TimelinePost model.
 class TestTimelinePost(unittest.TestCase):
     def setUp(self):
+        # Bind models to the test database and connect
         test_db.bind(MODELS, bind_refs=False, bind_backrefs=False)
         test_db.connect()
+
+        # Create tables
         test_db.create_tables(MODELS)
 
     def tearDown(self):
+        # Drop tables and close the database connection
         test_db.drop_tables(MODELS)
         test_db.close()
 
@@ -28,7 +33,7 @@ class TestTimelinePost(unittest.TestCase):
         assert first_post.email == 'john@example.com'
         assert first_post.content == "Hello world, I'm John!"
         assert first_post.created_at is not None
-
+ 
         # Assertions for second post
         assert second_post.id == 2
         assert second_post.name == 'Jane Doe'

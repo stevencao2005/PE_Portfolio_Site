@@ -32,11 +32,13 @@ class TimelinePost(Model):
     class Meta:
         database = mydb
 
-try:
-    mydb.connect()
-    mydb.create_tables([TimelinePost])
-except OperationalError as e:
-    print(f"An error occurred: {e}")
+@app.before_first_request
+def initialize_database():
+    try:
+        mydb.connect()
+        mydb.create_tables([TimelinePost])
+    except OperationalError as e:
+        print(f"An error occurred: {e}")
 
 name = "Steven Cao"
  

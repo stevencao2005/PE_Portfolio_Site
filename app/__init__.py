@@ -42,7 +42,7 @@ name = "Steven Cao"
  
 @app.route('/')
 def index():
-    about_me = "Hey! My name is Steven cao. I'm an incoming sophomore computer science student at the University of California, Irvine."
+    about_me = "Hey everyone! My name is Steven cao. I'm an incoming sophomore computer science student at the University of California, Irvine. I'm interested in ping pong, music, and books."
     markers  = [       
         {'lat': 33, 'lon': -118, 'popup': 'Los Angeles'},
         {'lat': 41, 'lon': -74, 'popup': 'New York'},

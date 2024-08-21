@@ -9,8 +9,9 @@ from playhouse.shortcuts import model_to_dict
 load_dotenv()
 app = Flask(__name__)
 
-if os.getenv("TESTING")=="true":
-    mydb=SqliteDatabase('file:memory?mode=memory&cache=shared', uri=True)
+# Setup database connection based on environment
+if os.getenv("TESTING") == "true":
+    mydb = SqliteDatabase('file:memory?mode=memory&cache=shared', uri=True)
 else:   
     mydb = MySQLDatabase(
         os.getenv("MYSQL_DATABASE"),
@@ -20,9 +21,7 @@ else:
         port=3306
     )
 
-print(mydb)
-
-#peewee model
+# Peewee model definition
 class TimelinePost(Model):
     name = CharField()
     email = CharField()
@@ -32,11 +31,21 @@ class TimelinePost(Model):
     class Meta:
         database = mydb
 
-try:
-    mydb.connect()
-    mydb.create_tables([TimelinePost])
-except OperationalError as e:
-    print(f"An error occurred: {e}")
+# Database initialization
+def initialize_database():
+    try:
+        mydb.connect()
+        print("Connected to the database successfully.")
+        mydb.create_tables([TimelinePost], safe=True)
+        print("Tables created successfully.")
+    except OperationalError as e:
+        print(f"An error occurred during table creation: {e}")
+    finally:
+        if not mydb.is_closed():
+            mydb.close()
+
+# Initialize the database
+initialize_database()
 
 name = "Steven Cao"
  

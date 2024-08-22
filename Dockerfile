@@ -8,6 +8,6 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-CMD ["sh", "-c", "python -c 'from app import initialize_database; initialize_database()' && flask run --host=0.0.0.0"]
+CMD ["flask", "run", "--host=0.0.0.0"]
 
 EXPOSE 5001

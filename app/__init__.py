@@ -36,7 +36,7 @@ def initialize_database():
     try:
         mydb.connect()
         print("Connected to the database successfully.")
-        mydb.create_tables([TimelinePost], safe=True)
+        mydb.create_tables([TimelinePost])
         print("Tables created successfully.")
     except OperationalError as e:
         print(f"An error occurred during table creation: {e}")

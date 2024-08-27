@@ -34,15 +34,16 @@ class TimelinePost(Model):
 # Database initialization
 def initialize_database():
     try:
-        mydb.connect()
-        print("Connected to the database successfully.")
-        mydb.create_tables([TimelinePost])
+        # Check if connection is open, if not, connect
+        if mydb.is_closed():
+            mydb.connect()
+        
+        # Check if tables exist before attempting to create them
+        if not TimelinePost.table_exists():
+            mydb.create_tables([TimelinePost])
         print("Tables created successfully.")
     except OperationalError as e:
         print(f"An error occurred during table creation: {e}")
-    finally:
-        if not mydb.is_closed():
-            mydb.close()
 
 # Initialize the database
 initialize_database()

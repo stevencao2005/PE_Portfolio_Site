@@ -4,6 +4,9 @@ import os
 os.environ['TESTING'] = 'true'
 
 from app import app
+from app import initialize_database, mydb
+from app import TimelinePost
+initialize_database()
 
 #test the application routes.
 class AppTestCase(unittest.TestCase):
@@ -11,7 +14,16 @@ class AppTestCase(unittest.TestCase):
 
         # creates a test client to mimic a web browser's behavior (simulate, test, analyze responses to HTTP requests)
         self.client = app.test_client()
- 
+                # Initialize the database and create tables
+        with app.app_context():
+            initialize_database()  # Make sure this initializes your tables
+            if not TimelinePost.table_exists():
+                mydb.create_tables([TimelinePost])
+    def tearDown(self):
+        # Clean up the database by dropping tables after each test
+        with app.app_context():
+            mydb.drop_tables([TimelinePost])
+
     def test_home(self):
         # verifies that the home page loads correctly and contains specific HTML elements.
         response = self.client.get('/')
